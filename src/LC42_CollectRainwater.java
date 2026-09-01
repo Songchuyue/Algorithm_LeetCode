@@ -2,24 +2,21 @@ public class LC42_CollectRainwater {
 	public static int trap(int[] height) {
 		int len = height.length;
 
-		int[] lef = new int[len];
-		int[] rig = new int[len];
-//		int[] ans = new int[len];
+		int lef = 0, rig = len - 1;
+		int lefMax = height[lef], rigMax = height[rig];
+
 		int ans = 0;
 
-		lef[0] = height[0];
-		for(int i = 1; i < len; i++) {
-			lef[i] = Math.max(lef[i - 1], height[i]);
-		}
-
-		rig[len - 1] = height[len - 1];
-		for(int i = len - 2; i >= 0; i--) {
-			rig[i] = Math.max(rig[i + 1], height[i]);
-		}
-
-		for(int i = 0; i < len; i++) {
-			// ans[i] = Math.max(0, Math.min(lef[i], rig[i]) - height[i]);
-			ans += Math.max(0, Math.min(lef[i], rig[i]) - height[i]);
+		while(lef < rig) {
+			if(lefMax < rigMax) {
+				ans += lefMax - height[lef];
+				lef++;
+				lefMax = Math.max(lefMax, height[lef]);
+			} else {
+				ans += rigMax - height[rig];
+				rig--;
+				rigMax = Math.max(rigMax, height[rig]);
+			}
 		}
 
 		return ans;
